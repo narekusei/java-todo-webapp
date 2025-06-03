@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <!-- Re-using styles from index for consistency -->
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        form { margin-top: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-actions button { padding: 10px 15px; background-color: #5cb85c; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        .form-actions button:hover { background-color: #4cae4c; }
+        .form-actions a { text-decoration: none; padding: 10px 15px; background-color: #aaa; color: white; border-radius: 4px; }
+        .form-actions a:hover { background-color: #888; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Task</h1>
+
+        <!-- This form is for changing an existing task -->
+        <form th:action="@{/todo/update}" th:object="${todoToEdit}" method="post">
+            <!-- Hidden field to carry the ID, very important! -->
+            <input type="hidden" th:field="*{id}" />
+            
+            <div>
+                <label for="task">Task Description:</label>
+                <input type="text" id="task" th:field="*{task}" required />
+            </div>
+
+            <!-- Last modified is just for display, not for editing here -->
+            <p style="font-size:0.9em; color: #555;">
+                Last modified: <span th:text="${#temporals.format(todoToEdit.lastModified, 'MMM dd, yyyy HH:mm:ss')}"></span>
+            </p>
+
+            <div class="form-actions">
+                <button type="submit">Save Changes</button>
+                <a th:href="@{/}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
