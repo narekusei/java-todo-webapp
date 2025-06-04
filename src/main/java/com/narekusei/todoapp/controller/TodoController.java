@@ -1,6 +1,5 @@
 package com.narekusei.todoapp.controller;
 
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,6 @@ public class TodoController {
     @GetMapping("/")
     public String index(Model model) { // Model carrys data to the HTML page.
         List<TodoItem> todos = todoService.getAllTodos();
-        // Let's sort them: incomplete first, then by last modified (newest first)
-        todos.sort(Comparator.comparing(TodoItem::isCompleted) // false (incomplete) comes before true (completed)
-                             .thenComparing(TodoItem::getLastModified, Comparator.reverseOrder()));
         model.addAttribute("todos", todos); // Add the list of todos to the "Model"
         model.addAttribute("newTodo", new TodoItem("")); // For the form to add a new task
         return "index"; // Tells Spring to use the "index.html" template.
@@ -98,5 +94,15 @@ public class TodoController {
             redirectAttributes.addFlashAttribute("errorMessage", "Task description cannot be empty for update.");
         }
         return "redirect:/";
+    }
+
+    // --- NEW METHOD FOR HANDLING SORT REQUEST ---
+    //Handles GET requests to "/todo/sort" to sort the To-Do list.
+
+    @GetMapping("/todo/sort")
+    public String sortTodos(RedirectAttributes redirectAttributes) {
+        todoService.sortTodosByCompletionAndDate(); // Call the new service method
+        redirectAttributes.addFlashAttribute("infoMessage", "Tasks have been sorted!");
+        return "redirect:/"; // Redirect back to the main page to see the sorted list
     }
 }

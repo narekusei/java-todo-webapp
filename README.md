@@ -7,3 +7,7 @@ A simple To-Do list web application built with Java Spring Boot.
 - Added Thymeleaf templates (index.html, edit-todo.html) for the UI.
 - Included basic CSS styling and user feedback messages.
 - Added sample initial tasks.
+
+# java-todo-webapp new features 
+- Added a 'Sort' button to the main page.
+- Sorting criteria: Incomplete tasks first, then by most recently modified.

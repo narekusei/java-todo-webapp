@@ -34,6 +34,9 @@
         .success { background-color: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; }
         .error { background-color: #f2dede; color: #a94442; border: 1px solid #ebccd1; }
         .info { background-color: #d9edf7; color: #31708f; border: 1px solid #bce8f1; }
+        .global-actions { margin-bottom: 20px; margin-top: 20px; text-align: right; }
+        .global-actions .sort-button {background-color: #5bc0de; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none; }
+        .global-actions .sort-button:hover {background-color: #31b0d5;}
     </style>
 </head>
 <body>
@@ -51,6 +54,13 @@
             <input type="text" th:field="*{task}" placeholder="What needs to be done?" required />
             <button type="submit">Add Task</button>
         </form>
+
+        <!-- --- NEW SORT BUTTON --- -->
+        <!-- This section provides global actions for the list, like sorting -->
+        <div class="global-actions" th:if="${!todos.isEmpty()}">
+            <!-- This link acts as a button to trigger the sorting defined in TodoController -->
+            <a th:href="@{/todo/sort}" class="sort-button">Sort (Incomplete First, then by Date)</a>
+        </div>
 
         <!-- List of To-Do items -->
         <!-- Okay, let's show all the tasks we have -->

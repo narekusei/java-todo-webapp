@@ -1,6 +1,7 @@
 package com.narekusei.todoapp.service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -81,5 +82,27 @@ public class TodoService {
                 System.out.println("Updated task ID: " + id + " with new description: " + newDescription);
             }
         });
+    }
+
+    // --- NEW METHOD FOR SORTING ---
+    /**
+     * Sorts the internal list of To-Do items.
+     * The primary sort key is the completion status (incomplete tasks first).
+     * The secondary sort key is the 'lastModified' timestamp (most recent first within each group).
+     * This method modifies the order of items in the 'todos' list directly.
+     */
+
+    public void sortTodosByCompletionAndDate() {
+        // Comparator for sorting:
+        // 1. By completion status (false/incomplete before true/completed).
+        // 2. Then, by lastModified date in descending order (newest first).
+        Comparator<TodoItem> comparator = Comparator
+                .comparing(TodoItem::isCompleted) // false comes before true by default
+                .thenComparing(TodoItem::getLastModified, Comparator.reverseOrder());
+
+        // The 'sort' method of List directly modifies the list.
+        // For CopyOnWriteArrayList, this operation creates a new underlying array.
+        this.todos.sort(comparator);
+        System.out.println("Service: To-Do items have been sorted by completion status and modification date.");
     }
 }
